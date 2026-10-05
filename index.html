@@ -97,6 +97,20 @@
     #elapsedSector{ transition: fill 220ms ease; }
     #accentEdgeRing{ transition: stroke 220ms ease; }
 
+    .clock{
+      text-align:center;
+      font-size: 15px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .04em;
+    }
+    .clock .now{
+      font-size: clamp(20px, 3.2vw, 24px);
+      color: var(--text);
+      font-weight: 500;
+      margin-left: 6px;
+    }
+
     .meta{ text-align:center; }
     .time{
       font-size: clamp(28px, 4.4vw, 40px);
@@ -137,6 +151,8 @@
 </head>
 <body>
 <div class="wrap">
+  <div class="clock"><span id="today"></span><span class="now" id="now"></span></div>
+
   <svg viewBox="0 0 200 200" aria-label="24h dial">
     <defs>
       <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
@@ -202,6 +218,9 @@
 
   const remainingEl = document.getElementById("remaining");
   const pctEl = document.getElementById("pct");
+  const todayEl = document.getElementById("today");
+  const nowEl = document.getElementById("now");
+  const weekdays = ["日","月","火","水","木","金","土"];
 
   const cx = 100, cy = 100;
   const rOuter = 70;
@@ -367,6 +386,8 @@
       const elapsedPct = elapsedRatio * 100;
       remainingEl.textContent = `残り ${remainingStr}`;
       pctEl.textContent = `残り ${remainPct.toFixed(2)}% / 経過 ${elapsedPct.toFixed(2)}%`;
+      todayEl.textContent = `${now.getMonth() + 1}/${now.getDate()} (${weekdays[now.getDay()]})`;
+      nowEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
     }
 
     requestAnimationFrame(tick);
